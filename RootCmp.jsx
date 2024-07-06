@@ -1,5 +1,7 @@
 const Router = ReactRouterDOM.HashRouter
 const { Routes, Route } = ReactRouterDOM
+const { Provider } = ReactRedux
+import { store } from "./store/store.js"
 
 import { AppHeader } from "./cmps/AppHeader.jsx"
 import { Home } from "./pages/Home.jsx"
@@ -13,7 +15,8 @@ import { Dashboard } from "./pages/Dashboard.jsx"
 
 export function RootCmp() {
 
-    return (
+    return <Provider store={store}>
+        {/* return ( */}
         <Router>
             <section className="app main-layout">
                 <AppHeader />
@@ -34,5 +37,8 @@ export function RootCmp() {
                 </main>
             </section>
         </Router>
-    )
+    </Provider>
+
+
+
 }
