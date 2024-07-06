@@ -49,7 +49,7 @@ export function TodoIndex() {
         saveTodo(todoToSave)
             .catch(err => {
                 console.log('err:', err)
-                showErrorMsg('Cannot toggle todo ' + todoId)
+                showErrorMsg('Cannot toggle todo ' + todo)
             })
     }
 

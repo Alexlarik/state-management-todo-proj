@@ -1,12 +1,14 @@
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
+import { login, logOut, signUp } from '../store/user.actions.js'
 
 const { useState } = React
 
-export function LoginSignup({ onSetUser }) {
+export function LoginSignup() {
 
     const [isSignup, setIsSignUp] = useState(false)
     const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
+    // const [isSignupState, setIsSignupState] = useState(false)
 
     function handleChange({ target }) {
         const { name: field, value } = target
@@ -15,27 +17,33 @@ export function LoginSignup({ onSetUser }) {
 
     function handleSubmit(ev) {
         ev.preventDefault()
-        onLogin(credentials)
+        const method = isSignup ? signUp : login
+
+        method(credentials)
+            .then(user => {
+                showSuccessMsg('Hi....', user)
+                console.log(user)
+            })
+            .catch(err => showErrorMsg(`Error logging in'  ${err}`))
     }
 
+    // function onLogin(credentials) {
+    //     isSignup ? signUp : login
+    // }
 
-    function onLogin(credentials) {
-        isSignup ? signup(credentials) : login(credentials)
-    }
+    // function login(credentials) {
+    //     login(credentials)
+    //         .then(onSetUser)
+    //         .then(() => { showSuccessMsg('Logged in successfully') })
+    //         .catch((err) => { showErrorMsg('Oops try again') })
+    // }
 
-    function login(credentials) {
-        userService.login(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Logged in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
-    }
-
-    function signup(credentials) {
-        userService.signup(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Signed in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
-    }
+    // function signup(credentials) {
+    //     signUp(credentials)
+    //         .then(onSetUser)
+    //         .then(() => { showSuccessMsg('Signed in successfully') })
+    //         .catch((err) => { showErrorMsg('Oops try again') })
+    // }
 
     return (
         <div className="login-page">
