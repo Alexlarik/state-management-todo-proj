@@ -4,6 +4,7 @@ import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodos } from "../store/todo.actions.js"
+import { SET_FILTER_BY } from "../store/store.js"
 
 const { useState, useEffect } = React
 const { Link, useSearchParams } = ReactRouterDOM
@@ -12,14 +13,15 @@ const { useSelector, useDispatch } = ReactRedux
 export function TodoIndex() {
 
     const todos = useSelector(state => state.todos)
-    // const dispatch = useDispatch()
+    const filterBy = useSelector(state => state.filterBy)
+    const dispatch = useDispatch()
 
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
 
     const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
-    const [filterBy, setFilterBy] = useState(defaultFilter)
+    // const [filterBy, setFilterBy] = useState(defaultFilter)
 
     useEffect(() => {
         setSearchParams(filterBy)
@@ -29,6 +31,10 @@ export function TodoIndex() {
                 showErrorMsg('Cannot load todos')
             })
     }, [filterBy])
+
+    function setFilterBy(filterBy) {
+        dispatch({ type: SET_FILTER_BY, filterBy })
+    }
 
     function onRemoveTodo(todoId) {
         todoService.remove(todoId)
