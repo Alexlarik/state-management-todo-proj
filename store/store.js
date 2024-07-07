@@ -8,11 +8,13 @@ export const REMOVE_TODO = 'REMOVE_TODO'
 export const ADD_TODO = 'ADD_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_USER = 'SET_USER'
+export const UPDATE_BALANCE = 'UPDATE_BALANCE'
 
 const initialState = {
     todos: [],
     filterBy: todoService.getDefaultFilter(),
     user: userService.getLoggedinUser(),
+    balance: userService.getLoggedinUser() ? userService.getLoggedinUser().balance : 0,
 }
 
 function appReducer(state = initialState, action = {}) {
@@ -33,7 +35,8 @@ function appReducer(state = initialState, action = {}) {
             return { ...state, todos }
         case SET_USER:
             return { ...state, user: action.user }
-
+        case UPDATE_BALANCE:
+            return { ...state, balance: action.balance += 10 }
         default:
             return state
     }

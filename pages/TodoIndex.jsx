@@ -5,6 +5,7 @@ import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg, showUserMsg } from "../services/event-bus.service.js"
 import { loadTodos, saveTodo, removeTodo } from "../store/todo.actions.js"
 import { SET_FILTER_BY } from "../store/store.js"
+import { onUpdateBalance } from "../store/user.actions.js"
 
 const { useState, useEffect } = React
 const { Link, useSearchParams } = ReactRouterDOM
@@ -15,6 +16,7 @@ export function TodoIndex() {
     const todos = useSelector(state => state.todos)
     const filterBy = useSelector(state => state.filterBy)
     const dispatch = useDispatch()
+    var user = useSelector(state => state.user)
 
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
@@ -54,6 +56,7 @@ export function TodoIndex() {
 
     function onToggleTodo(todo) {
         const todoToSave = { ...todo, isDone: !todo.isDone }
+        if (todoToSave.isDone === true) onUpdateBalance(user)
         saveTodo(todoToSave)
             .catch(err => {
                 console.log('err:', err)

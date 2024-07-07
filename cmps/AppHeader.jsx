@@ -14,6 +14,7 @@ export function AppHeader() {
     const navigate = useNavigate()
     // const [user, setUser] = useState(userService.getLoggedinUser())
     var user = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
     function onLogout() {
         logOut()
@@ -34,9 +35,10 @@ export function AppHeader() {
             <section className="header-container">
                 <h1>React Todo App</h1>
                 {user ? (
-                    < section >
+                    < section className='user-info' >
 
-                        <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
+                        <Link to={`/user/${user}`}>Hello {user.fullname}</Link>
+                        <p> Balance: {user.balance}</p>
                         <button onClick={onLogout}>Logout</button>
                     </ section >
                 ) : (
