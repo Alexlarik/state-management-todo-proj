@@ -2,7 +2,7 @@ const { useState, useEffect } = React
 
 export function TodoFilter({ filterBy, onSetFilterBy }) {
 
-    const [filterByToEdit, setFilterByToEdit] = useState({...filterBy})
+    const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
 
     useEffect(() => {
         // Notify parent
@@ -35,6 +35,11 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
         onSetFilterBy(filterByToEdit)
     }
 
+    function onStatusChange({ target }) {
+        const { value: status } = target
+        setFilterByToEdit(prev => ({ ...prev, status }))
+    }
+
     const { txt, importance } = filterByToEdit
     return (
         <section className="todo-filter">
@@ -49,6 +54,11 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
                 />
 
                 <button hidden>Set Filter</button>
+                <select onChange={onStatusChange}>
+                    <option value="">All</option>
+                    <option value="done">Done</option>
+                    <option value="active">Active</option>
+                </select>
             </form>
         </section>
     )
