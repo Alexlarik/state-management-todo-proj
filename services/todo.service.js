@@ -20,6 +20,7 @@ window.cs = todoService
 function query(filterBy = {}) {
     return storageService.query(TODO_KEY)
         .then(todos => {
+            // console.log(filterBy.status)
             if (filterBy.status) {
                 const isDone = filterBy.status === 'done'
                 todos = todos.filter(todo => todo.isDone === isDone)
@@ -66,7 +67,7 @@ function getEmptyTodo(txt = '', importance = 5) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', importance: 0, status: 'all' }
+    return { txt: '', importance: 0, status: '' }
 }
 
 function getFilterFromSearchParams(searchParams) {

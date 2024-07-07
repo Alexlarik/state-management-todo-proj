@@ -13,11 +13,13 @@ export function removeTodo(todoId) {
 
 export function saveTodo(todo) {
     const type = todo._id ? UPDATE_TODO : ADD_TODO
+    console.log(type)
 
     return todoService.save(todo)
-        .then(savedTodo => {
-            store.dispatch({ type, todos: savedTodo })
-            return savedTodo
+        .then(newTodo => {
+            console.log(newTodo)
+            store.dispatch({ type, todo: newTodo })
+            return newTodo
         })
         .catch(err => {
             console.error('Error saving todo:', err)
