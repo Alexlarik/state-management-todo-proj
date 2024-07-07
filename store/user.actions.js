@@ -11,7 +11,7 @@ export function login(creds) {
         .then(user => store.dispatch({ type: SET_USER, user }))
 }
 
-export function logOut(creds) {
-    return userService.logout(creds)
-        .then(user => store.dispatch({ type: SET_USER, user }))
+export function logOut() {
+    return userService.logout()
+        .then(user => store.dispatch({ type: SET_USER, user: null }))
 }

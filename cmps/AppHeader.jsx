@@ -6,26 +6,29 @@ import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
 import { showErrorMsg } from '../services/event-bus.service.js'
+import { logOut, login } from '../store/user.actions.js'
+const { useSelector, useDispatch } = ReactRedux
 
 
 export function AppHeader() {
     const navigate = useNavigate()
-    const [user, setUser] = useState(userService.getLoggedinUser())
-    
+    // const [user, setUser] = useState(userService.getLoggedinUser())
+    var user = useSelector(state => state.user)
+
     function onLogout() {
-        userService.logout()
+        logOut()
             .then(() => {
-                onSetUser(null)
+                showSuccessMsg('Logged out')
             })
             .catch((err) => {
-                showErrorMsg('OOPs try again')
+                showErrorMsg(`OOPs try again `)
             })
     }
 
-    function onSetUser(user) {
-        setUser(user)
-        navigate('/')
-    }
+    // function onSetUser(user) {
+    //     setUser(user)
+    //     navigate('/')
+    // }
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
@@ -38,7 +41,7 @@ export function AppHeader() {
                     </ section >
                 ) : (
                     <section>
-                        <LoginSignup onSetUser={onSetUser} />
+                        <LoginSignup />
                     </section>
                 )}
                 <nav className="app-nav">
