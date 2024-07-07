@@ -2,7 +2,7 @@ import { TodoFilter } from "../cmps/TodoFilter.jsx"
 import { TodoList } from "../cmps/TodoList.jsx"
 import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { showErrorMsg, showSuccessMsg, showUserMsg } from "../services/event-bus.service.js"
 import { loadTodos, saveTodo, removeTodo } from "../store/todo.actions.js"
 import { SET_FILTER_BY } from "../store/store.js"
 
@@ -37,11 +37,19 @@ export function TodoIndex() {
     }
 
     function onRemoveTodo(todoId) {
-        removeTodo(todoId)
-            .catch(err => {
-                console.log('err:', err)
-                showErrorMsg('Cannot remove todo ' + todoId)
-            })
+        var text
+        if (confirm('Are You sure you want to delete?') === true) {
+            text = 'You pressed OK!,item deleted'
+            console.log(text)
+            removeTodo(todoId)
+                .catch(err => {
+                    console.log('err:', err)
+                    showErrorMsg('Cannot remove todo ' + todoId)
+                })
+        } else {
+            text = 'You canceled!'
+            console.log(text)
+        }
     }
 
     function onToggleTodo(todo) {
