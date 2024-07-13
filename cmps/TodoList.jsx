@@ -4,7 +4,8 @@ import { loadTodos, saveTodo, removeTodo } from "../store/todo.actions.js"
 const { useSelector } = ReactRedux
 
 export function TodoList({ onToggleTodo, onRemoveTodo }) {
-    const todos = useSelector(state => state.todos)
+    const todos = useSelector(state => state.x.todos)
+    console.log('Todos in TodoList:', todos)
 
     // function handleChange({ target }) {
     //     const { name: field, value } = target

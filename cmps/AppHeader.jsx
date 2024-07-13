@@ -13,7 +13,8 @@ const { useSelector, useDispatch } = ReactRedux
 export function AppHeader() {
     const navigate = useNavigate()
     // const [user, setUser] = useState(userService.getLoggedinUser())
-    var user = useSelector(state => state.user)
+    var user = useSelector(state => state.y.user)
+    var balance = useSelector(state => state.y.balance)
     const dispatch = useDispatch()
 
     function onLogout() {
@@ -38,7 +39,7 @@ export function AppHeader() {
                     < section className='user-info' >
 
                         <Link to={`/user/${user}`}>Hello {user.fullname}</Link>
-                        <p> Balance: {user.balance}</p>
+                        <p> Balance: {balance}</p>
                         <button onClick={onLogout}>Logout</button>
                     </ section >
                 ) : (

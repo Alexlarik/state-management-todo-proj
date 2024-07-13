@@ -4,7 +4,7 @@ import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg, showUserMsg } from "../services/event-bus.service.js"
 import { loadTodos, saveTodo, removeTodo } from "../store/todo.actions.js"
-import { SET_FILTER_BY } from "../store/store.js"
+import { SET_FILTER_BY } from "../store/todo.reducer.js"
 import { onUpdateBalance } from "../store/user.actions.js"
 
 const { useState, useEffect } = React
@@ -13,10 +13,11 @@ const { useSelector, useDispatch } = ReactRedux
 
 export function TodoIndex() {
 
-    const todos = useSelector(state => state.todos)
-    const filterBy = useSelector(state => state.filterBy)
+    const todos = useSelector(state => state.x.todos)
+    const filterBy = useSelector(state => state.x.filterBy)
     const dispatch = useDispatch()
-    var user = useSelector(state => state.user)
+    var user = useSelector(state => state.y.user)
+    var balance = useSelector(state => state.y.balance)
 
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
@@ -57,6 +58,7 @@ export function TodoIndex() {
     function onToggleTodo(todo) {
         const todoToSave = { ...todo, isDone: !todo.isDone }
         if (todoToSave.isDone === true) onUpdateBalance(user)
+
         saveTodo(todoToSave)
             .catch(err => {
                 console.log('err:', err)
@@ -65,8 +67,10 @@ export function TodoIndex() {
     }
 
     if (!todos) return <div>Loading...</div>
+
     return (
         <section className="todo-index">
+            {console.log('test')}
             <TodoFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
             <div>
                 <Link to="/todo/edit" className="btn" >Add Todo</Link>

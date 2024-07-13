@@ -1,10 +1,11 @@
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
 import { login, logOut, signUp } from '../store/user.actions.js'
-
+const { useSelector, useDispatch } = ReactRedux
 const { useState } = React
 
 export function LoginSignup() {
+    const user = useSelector((state) => state.y.user)
 
     const [isSignup, setIsSignUp] = useState(false)
     const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
@@ -12,20 +13,45 @@ export function LoginSignup() {
 
     function handleChange({ target }) {
         const { name: field, value } = target
-        setCredentials(prevCreds => ({ ...prevCreds, [field]: value }))
+        setCredentials((prevCreds) => ({ ...prevCreds, [field]: value }))
     }
 
     function handleSubmit(ev) {
         ev.preventDefault()
-        const method = isSignup ? signUp : login
-
-        method(credentials)
-            .then(user => {
-                showSuccessMsg('Hi....', user)
-                console.log(user)
-            })
-            .catch(err => showErrorMsg(`Error logging in'  ${err}`))
+        onLogin(credentials)
     }
+
+    function onLogin(credentials) {
+        isSignup ? _signup(credentials) : _login(credentials)
+    }
+
+    function _login(credentials) {
+        login(credentials)
+            .then(() => { showSuccessMsg('Logged in successfully') })
+            .catch((err) => { showErrorMsg('Oops try again') })
+    }
+
+    function _signup(credentials) {
+        signUp(credentials)
+            .then(() => { showSuccessMsg('Signed in successfully') })
+            .catch((err) => { showErrorMsg('Oops try again') })
+    }
+    // function handleChange({ target }) {
+    //     const { name: field, value } = target
+    //     setCredentials(prevCreds => ({ ...prevCreds, [field]: value }))
+    // }
+
+    // function handleSubmit(ev) {
+    //     ev.preventDefault()
+    //     const method = isSignup ? signUp : login
+
+    //     method(credentials)
+    //         .then(user => {
+    //             showSuccessMsg('Hi....', user)
+    //             console.log(user)
+    //         })
+    //         .catch(err => showErrorMsg(`Error logging in'  ${err}`))
+    // }
 
     // function onLogin(credentials) {
     //     isSignup ? signUp : login
